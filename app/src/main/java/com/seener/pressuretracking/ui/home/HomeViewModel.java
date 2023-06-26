@@ -2,10 +2,19 @@ package com.seener.pressuretracking.ui.home;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.seener.pressuretracking.http.WeatherFetcher;
+import com.seener.pressuretracking.modle.TemperatureData;
+import com.seener.pressuretracking.modle.WeatherData;
+
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
 
 public class HomeViewModel extends ViewModel {
 
@@ -56,5 +65,29 @@ public class HomeViewModel extends ViewModel {
 
     public void setTextTemperature(String value) {
         mTextTemperature.setValue(value);
+    }
+
+    public Disposable getTemperatureFromWeb(String cityName) {
+        return WeatherFetcher.getInstance().fetchWeatherData(cityName, new Consumer<WeatherData>() {
+            @Override
+            public void accept(WeatherData weatherData) throws Throwable {
+                TemperatureData temperatureData = weatherData.getTemperatureData();
+                double temperature = temperatureData.getTemperature();
+                Log.i("WeatherFetcher", "Current temperature: " + temperature);
+                setTextTemperature("Temperature\n" + temperature + " C");
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Throwable {
+                Log.e("WeatherFetcher", "Error fetching weather data: " + throwable.getMessage());
+            }
+        });
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        Log.d("FA", "HomeViewModel onCleared");
+
     }
 }

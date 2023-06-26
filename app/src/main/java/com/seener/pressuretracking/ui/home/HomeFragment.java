@@ -24,6 +24,7 @@ import com.seener.pressuretracking.modle.Pressure;
 import com.seener.pressuretracking.modle.TemperatureData;
 import com.seener.pressuretracking.modle.WeatherData;
 
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
 
 public class HomeFragment extends Fragment implements SensorEventListener {
@@ -36,6 +37,8 @@ public class HomeFragment extends Fragment implements SensorEventListener {
     private Context mContext;
 
     private LocationFetcher locationFetcher;
+
+    private Disposable getTemperatureFromWebDisposable;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -89,38 +92,11 @@ public class HomeFragment extends Fragment implements SensorEventListener {
 
     }
 
-    private void initTemperature(double latitude, double longitude) {
-        WeatherFetcher.getInstance().fetchWeatherData(latitude, longitude, new Consumer<WeatherData>() {
-            @Override
-            public void accept(WeatherData weatherData) throws Throwable {
-                TemperatureData temperatureData = weatherData.getTemperatureData();
-                double temperature = temperatureData.getTemperature();
-                Log.i("WeatherFetcher", "Current temperature: " + temperature);
-
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) throws Throwable {
-                Log.e("WeatherFetcher", "Error fetching weather data: " + throwable.getMessage());
-            }
-        });
-    }
-
     private void initTemperature(String cityName) {
-        WeatherFetcher.getInstance().fetchWeatherData(cityName, new Consumer<WeatherData>() {
-            @Override
-            public void accept(WeatherData weatherData) throws Throwable {
-                TemperatureData temperatureData = weatherData.getTemperatureData();
-                double temperature = temperatureData.getTemperature();
-                Log.i("WeatherFetcher", "Current temperature: " + temperature);
-                mHomeViewModel.setTextTemperature("Temperature\n" + temperature + " C");
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) throws Throwable {
-                Log.e("WeatherFetcher", "Error fetching weather data: " + throwable.getMessage());
-            }
-        });
+        if (getTemperatureFromWebDisposable != null && !getTemperatureFromWebDisposable.isDisposed()) {
+            getTemperatureFromWebDisposable.dispose();
+        }
+        getTemperatureFromWebDisposable = mHomeViewModel.getTemperatureFromWeb(cityName);
     }
 
     @Override
@@ -147,5 +123,13 @@ public class HomeFragment extends Fragment implements SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    @Override
+    public void onDestroy() {
+        if (getTemperatureFromWebDisposable != null && !getTemperatureFromWebDisposable.isDisposed()) {
+            getTemperatureFromWebDisposable.dispose();
+        }
+        super.onDestroy();
     }
 }
