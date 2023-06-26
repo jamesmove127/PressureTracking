@@ -17,26 +17,30 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.seener.pressuretracking.databinding.FragmentHomeBinding;
+import com.seener.pressuretracking.http.WeatherFetcher;
+import com.seener.pressuretracking.location.LocationFetcher;
 import com.seener.pressuretracking.modle.Pressure;
+import com.seener.pressuretracking.modle.TemperatureData;
+import com.seener.pressuretracking.modle.WeatherData;
+
+import io.reactivex.rxjava3.functions.Consumer;
 
 public class HomeFragment extends Fragment implements SensorEventListener {
 
     private FragmentHomeBinding binding;
-    private HomeViewModel mhHomeViewModel;
+    private HomeViewModel mHomeViewModel;
 
     private SensorManager mSensorManager;
     private Sensor mPressure;
     private Context mContext;
 
+    private LocationFetcher locationFetcher;
 
-    private TextView textAction;
-    private TextView textPessure;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        mhHomeViewModel =
+        mHomeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
@@ -45,12 +49,21 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         mContext = getActivity().getApplicationContext();
 
         initSensor();
+//        initTemperature(49.2827, -123.1207);
 
-        textAction = binding.textAction;
-        textPessure = binding.textPressure;
 
-        mhHomeViewModel.getAction().observe(getViewLifecycleOwner(), textAction::setText);
-        mhHomeViewModel.getPressure().observe(getViewLifecycleOwner(), textPessure::setText);
+        TextView textAction = binding.textAction;
+        TextView textPressure = binding.textPressure;
+        TextView textAltitude = binding.textAltitude;
+        TextView textTemperature = binding.textTemperature;
+
+        mHomeViewModel.getAction().observe(getViewLifecycleOwner(), textAction::setText);
+        mHomeViewModel.getPressure().observe(getViewLifecycleOwner(), textPressure::setText);
+        mHomeViewModel.getAltitude().observe(getViewLifecycleOwner(), textAltitude::setText);
+        mHomeViewModel.getTemperature().observe(getViewLifecycleOwner(), textTemperature::setText);
+
+        initTemperature("Vancouver");
+        initLocation();
 
         return root;
     }
@@ -65,8 +78,55 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         }
     }
 
+    private void initLocation() {
+        locationFetcher = new LocationFetcher(mContext);
+        locationFetcher.startLocationUpdates(mContext, new LocationFetcher.LocationCallback() {
+            @Override
+            public void onLocationReceived(double latitude, double longitude) {
+//                initTemperature(latitude, longitude);
+            }
+        });
+
+    }
+
+    private void initTemperature(double latitude, double longitude) {
+        WeatherFetcher.getInstance().fetchWeatherData(latitude, longitude, new Consumer<WeatherData>() {
+            @Override
+            public void accept(WeatherData weatherData) throws Throwable {
+                TemperatureData temperatureData = weatherData.getTemperatureData();
+                double temperature = temperatureData.getTemperature();
+                Log.i("WeatherFetcher", "Current temperature: " + temperature);
+
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Throwable {
+                Log.e("WeatherFetcher", "Error fetching weather data: " + throwable.getMessage());
+            }
+        });
+    }
+
+    private void initTemperature(String cityName) {
+        WeatherFetcher.getInstance().fetchWeatherData(cityName, new Consumer<WeatherData>() {
+            @Override
+            public void accept(WeatherData weatherData) throws Throwable {
+                TemperatureData temperatureData = weatherData.getTemperatureData();
+                double temperature = temperatureData.getTemperature();
+                Log.i("WeatherFetcher", "Current temperature: " + temperature);
+                mHomeViewModel.setTextTemperature("Temperature\n" + temperature + " C");
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Throwable {
+                Log.e("WeatherFetcher", "Error fetching weather data: " + throwable.getMessage());
+            }
+        });
+    }
+
     @Override
     public void onDestroyView() {
+        mSensorManager.unregisterListener(this);
+        locationFetcher.stopLocationUpdates();
         super.onDestroyView();
         binding = null;
     }
@@ -76,8 +136,12 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         float[] values = event.values;
         Pressure pressure = new Pressure();
         pressure.setPressure(values[0]);
-        mhHomeViewModel.setTextPressure(String.valueOf(pressure.getPressure()));
-        mhHomeViewModel.setTextAction(String.valueOf(pressure.getAction()));
+        mHomeViewModel.setTextPressure("Pressure\n" + pressure.getPressure() + "\nhPa");
+        mHomeViewModel.setTextAction("Action\n" + pressure.getAction());
+        float altitude = SensorManager.getAltitude(1013.25f, pressure.getPressure()); // 计算海拔高度
+        mHomeViewModel.setTextAltitude("Altitude\n" + altitude + "\nm");
+
+
     }
 
     @Override

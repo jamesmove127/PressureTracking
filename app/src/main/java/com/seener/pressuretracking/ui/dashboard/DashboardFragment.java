@@ -182,6 +182,7 @@ public class DashboardFragment extends Fragment implements OnChartValueSelectedL
 
     @Override
     public void onDestroyView() {
+        mSensorManager.unregisterListener(this);
         super.onDestroyView();
         binding = null;
     }
