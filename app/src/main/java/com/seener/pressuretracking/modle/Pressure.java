@@ -6,7 +6,7 @@ public class Pressure {
 
     private float pressure;
     private Action action;
-    private Strategy strategy;
+    private IStrategy IStrategy;
 
 
     public float getPressure() {
@@ -25,12 +25,12 @@ public class Pressure {
         this.action = action;
     }
 
-    public Strategy getStrategy() {
-        return strategy;
+    public IStrategy getStrategy() {
+        return IStrategy;
     }
 
-    public void setStrategy(Strategy strategy) {
-        this.strategy = strategy;
+    public void setStrategy(IStrategy IStrategy) {
+        this.IStrategy = IStrategy;
     }
 
     public enum Action {
@@ -38,5 +38,7 @@ public class Pressure {
         WALKING,
         RUNNING,
         DRIVING,
+        UP_STAIRS,
+        DOWN_STAIRS,
     }
 }

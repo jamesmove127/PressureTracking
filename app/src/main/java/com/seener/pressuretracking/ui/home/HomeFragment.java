@@ -112,12 +112,10 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         float[] values = event.values;
         Pressure pressure = new Pressure();
         pressure.setPressure(values[0]);
-        mHomeViewModel.setTextPressure("Pressure\n" + pressure.getPressure() + "\nhPa");
-        mHomeViewModel.setTextAction("Action\n" + pressure.getAction());
+        mHomeViewModel.setTextPressure(pressure.getPressure());
+
         float altitude = SensorManager.getAltitude(1013.25f, pressure.getPressure()); // 计算海拔高度
         mHomeViewModel.setTextAltitude("Altitude\n" + altitude + "\nm");
-
-
     }
 
     @Override

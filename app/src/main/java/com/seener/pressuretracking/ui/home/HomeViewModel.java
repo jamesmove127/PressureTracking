@@ -9,6 +9,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.seener.pressuretracking.http.WeatherFetcher;
+import com.seener.pressuretracking.modle.DownUpStrategy;
+import com.seener.pressuretracking.modle.IStrategy;
+import com.seener.pressuretracking.modle.Pressure;
+import com.seener.pressuretracking.modle.StrategyContext;
 import com.seener.pressuretracking.modle.TemperatureData;
 import com.seener.pressuretracking.modle.WeatherData;
 
@@ -23,6 +27,11 @@ public class HomeViewModel extends ViewModel {
     private final MutableLiveData<String> mTextAltitude;
     private final MutableLiveData<String> mTextTemperature;
 
+    private long pressureCount = 0;
+
+    private IStrategy downUpStrategy;
+    private StrategyContext strategyContext;
+
     public HomeViewModel() {
         mTextAction = new MutableLiveData<>();
         mTextPressure = new MutableLiveData<>();
@@ -32,6 +41,9 @@ public class HomeViewModel extends ViewModel {
         mTextPressure.setValue("999");
         mTextAltitude.setValue("0");
         mTextTemperature.setValue("15C");
+
+        downUpStrategy = new DownUpStrategy();
+        strategyContext = new StrategyContext(downUpStrategy);
     }
 
     public LiveData<String> getAction() {
@@ -51,8 +63,18 @@ public class HomeViewModel extends ViewModel {
     }
 
 
-    public void setTextPressure(String value) {
-        mTextPressure.setValue(value);
+    public void setTextPressure(float value) {
+        mTextPressure.setValue("Pressure\n" + value + "\nhPa");
+
+        if (pressureCount % 10 == 0) {
+            Pressure.Action action = strategyContext.executeStrategy(value);
+            mTextAction.setValue("Action\n" + action);
+        }
+        if (pressureCount > Integer.MAX_VALUE / 2) {
+            pressureCount = 0;
+        } else {
+            pressureCount++;
+        }
     }
 
     public void setTextAltitude(String value) {

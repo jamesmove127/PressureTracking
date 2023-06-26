@@ -120,8 +120,8 @@ public class DashboardFragment extends Fragment implements OnChartValueSelectedL
         YAxis leftAxis = chart.getAxisLeft();
 
         leftAxis.setTextColor(Color.WHITE);
-        leftAxis.setAxisMaximum(1004f);
-        leftAxis.setAxisMinimum(1002f);
+        leftAxis.setAxisMaximum(1100f);
+        leftAxis.setAxisMinimum(950f);
         leftAxis.setDrawGridLines(true);
 
         YAxis rightAxis = chart.getAxisRight();
