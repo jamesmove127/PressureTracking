@@ -60,7 +60,6 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         mPressure = mSensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE);
         if (mPressure != null) {
             mSensorManager.registerListener(this, mPressure, SensorManager.SENSOR_DELAY_UI);
-            Toast.makeText(mContext, "Success! There's a barometer", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(mContext, "Failed! There isn't a barometer", Toast.LENGTH_LONG).show();
         }
