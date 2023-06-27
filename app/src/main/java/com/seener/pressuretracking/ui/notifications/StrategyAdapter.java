@@ -13,14 +13,24 @@ import java.util.List;
 
 public class StrategyAdapter extends RecyclerView.Adapter<StrategyAdapter.ViewHolder> {
     private List<String> dataList;
+    private OnItemClickListener onItemClickListener;
 
     public StrategyAdapter(List<String> dataList) {
         this.dataList = dataList;
     }
 
-    public void upateList(List<String> dataList) {
+    public void updateList(List<String> dataList) {
         this.dataList.clear();
         this.dataList.addAll(dataList);
+        notifyDataSetChanged();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -42,6 +52,14 @@ public class StrategyAdapter extends RecyclerView.Adapter<StrategyAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         String data = dataList.get(position);
         holder.textView.setText(data);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(holder.getBindingAdapterPosition());
+                }
+            }
+        });
     }
 
     @Override
