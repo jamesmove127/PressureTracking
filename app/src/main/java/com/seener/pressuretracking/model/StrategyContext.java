@@ -1,4 +1,4 @@
-package com.seener.pressuretracking.module;
+package com.seener.pressuretracking.model;
 
 public class StrategyContext {
 

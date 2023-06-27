@@ -4,16 +4,22 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.List;
+
 public class NotificationsViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
+    private final MutableLiveData<List<String>> stringList;
 
     public NotificationsViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+        stringList = new MutableLiveData<>();
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public void setList(List<String> strings){
+        stringList.setValue(strings);
+
+    }
+
+    public LiveData<List<String>> getList() {
+        return stringList;
     }
 }

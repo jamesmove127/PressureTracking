@@ -1,4 +1,4 @@
-package com.seener.pressuretracking.module;
+package com.seener.pressuretracking.model;
 
 import java.util.ArrayList;
 import java.util.Collections;

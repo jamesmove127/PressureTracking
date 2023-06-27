@@ -1,6 +1,6 @@
 package com.seener.pressuretracking.http;
 
-import com.seener.pressuretracking.module.WeatherData;
+import com.seener.pressuretracking.model.WeatherData;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;

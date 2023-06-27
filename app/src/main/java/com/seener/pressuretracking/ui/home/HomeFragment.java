@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.seener.pressuretracking.databinding.FragmentHomeBinding;
 import com.seener.pressuretracking.location.LocationFetcher;
-import com.seener.pressuretracking.module.Pressure;
+import com.seener.pressuretracking.model.Pressure;
 
 import io.reactivex.rxjava3.disposables.Disposable;
 

@@ -1,6 +1,6 @@
 package com.seener.pressuretracking.http;
 
-import com.seener.pressuretracking.module.WeatherData;
+import com.seener.pressuretracking.model.WeatherData;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;

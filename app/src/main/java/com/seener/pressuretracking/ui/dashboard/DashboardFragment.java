@@ -28,7 +28,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.seener.pressuretracking.databinding.FragmentDashboardBinding;
-import com.seener.pressuretracking.module.Pressure;
+import com.seener.pressuretracking.model.Pressure;
 
 public class DashboardFragment extends Fragment implements OnChartValueSelectedListener, SensorEventListener {
 
