@@ -1,7 +1,5 @@
 package com.seener.pressuretracking.ui.home;
 
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -9,14 +7,13 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.seener.pressuretracking.http.WeatherFetcher;
-import com.seener.pressuretracking.modle.DownUpStrategy;
-import com.seener.pressuretracking.modle.IStrategy;
-import com.seener.pressuretracking.modle.Pressure;
-import com.seener.pressuretracking.modle.StrategyContext;
-import com.seener.pressuretracking.modle.TemperatureData;
-import com.seener.pressuretracking.modle.WeatherData;
+import com.seener.pressuretracking.module.DownUpStrategy;
+import com.seener.pressuretracking.module.IStrategy;
+import com.seener.pressuretracking.module.Pressure;
+import com.seener.pressuretracking.module.StrategyContext;
+import com.seener.pressuretracking.module.TemperatureData;
+import com.seener.pressuretracking.module.WeatherData;
 
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
 

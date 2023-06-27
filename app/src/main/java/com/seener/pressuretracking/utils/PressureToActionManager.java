@@ -1,6 +1,6 @@
 package com.seener.pressuretracking.utils;
 
-import com.seener.pressuretracking.modle.Pressure;
+import com.seener.pressuretracking.module.Pressure;
 
 public class PressureToActionManager {
 

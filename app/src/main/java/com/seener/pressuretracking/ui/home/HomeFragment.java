@@ -6,7 +6,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +17,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.seener.pressuretracking.databinding.FragmentHomeBinding;
-import com.seener.pressuretracking.http.WeatherFetcher;
 import com.seener.pressuretracking.location.LocationFetcher;
-import com.seener.pressuretracking.modle.Pressure;
-import com.seener.pressuretracking.modle.TemperatureData;
-import com.seener.pressuretracking.modle.WeatherData;
+import com.seener.pressuretracking.module.Pressure;
 
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
 
 public class HomeFragment extends Fragment implements SensorEventListener {
 

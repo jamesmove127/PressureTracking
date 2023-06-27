@@ -1,4 +1,4 @@
-package com.seener.pressuretracking.modle;
+package com.seener.pressuretracking.module;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -29,7 +28,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.seener.pressuretracking.databinding.FragmentDashboardBinding;
-import com.seener.pressuretracking.modle.Pressure;
+import com.seener.pressuretracking.module.Pressure;
 
 public class DashboardFragment extends Fragment implements OnChartValueSelectedListener, SensorEventListener {
 
