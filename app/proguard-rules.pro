@@ -31,9 +31,6 @@
 #混淆时采用的算法
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 
-#把混淆类中的方法名也混淆了
--useuniqueclassmembernames
-
 #指定不去忽略非公共的库的类
 -dontskipnonpubliclibraryclasses
 
@@ -198,3 +195,68 @@
 -keep public class android.webkit.WebView
 -keep public class android.net.http.SslError
 -keep public class android.webkit.WebViewClient
+
+# RxJava 3
+-dontwarn io.reactivex.rxjava3.**
+-keep class io.reactivex.rxjava3.** { *; }
+-keep interface io.reactivex.rxjava3.** { *; }
+-keep class io.reactivex.rxjava3.plugins.** { *; }
+-keep class io.reactivex.rxjava3.internal.schedulers.** { *; }
+-keepclassmembers class io.reactivex.rxjava3.internal.util.ObservableQueue { *; }
+-keepclassmembers class io.reactivex.rxjava3.internal.fuseable.SimpleQueue { *; }
+
+# Retrofit
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+
+# OkHttp
+-dontwarn okhttp3.**
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+-keepclassmembers class okhttp3.** { *; }
+
+# Okio
+-dontwarn okio.**
+-keep class okio.** { *; }
+
+# Firebase Analytics
+-keep class com.google.firebase.analytics.** { *; }
+
+# Firebase Crashlytics
+-keepattributes SourceFile,LineNumberTable
+-keep class com.google.firebase.crashlytics.** { *; }
+-keep class com.crashlytics.** { *; }
+-keepattributes *Annotation*
+
+# Firebase Performance Monitoring
+-keep class com.google.firebase.perf.** { *; }
+-keep class com.google.android.gms.internal.firebase.perf.** { *; }
+-keep class com.google.firebase.internal.** { *; }
+
+# Firebase Remote Config
+-keep class com.google.firebase.remoteconfig.** { *; }
+
+# Firebase Cloud Messaging
+-keep class com.google.firebase.messaging.** { *; }
+
+# Firebase Auth
+-keep class com.google.firebase.auth.** { *; }
+
+# Firebase Realtime Database
+-keep class com.google.firebase.database.** { *; }
+
+# Firebase Firestore
+-keep class com.google.firebase.firestore.** { *; }
+
+# Firebase Storage
+-keep class com.google.firebase.storage.** { *; }
+
+# Firebase Functions
+-keep class com.google.firebase.functions.** { *; }
+
+# Firebase Dynamic Links
+-keep class com.google.firebase.dynamiclinks.** { *; }
+
+
